@@ -442,9 +442,9 @@ def get_product_sub_cat_filter(parent_category_id):
 
     if main_filter=='price':
         if order_by=='desc':
-            products = Product.query.filter( (or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) & (Product.deleted_at == None) | (Product.boost==1) ).order_by(Product.boost.desc()).order_by(Product.price.desc()).all()
+            products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) | (Product.boost==1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price.desc()).all()
         if order_by!='desc':
-            products = Product.query.filter( (or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) & (Product.deleted_at == None) | (Product.boost==1) ).order_by(Product.boost.desc()).order_by(Product.price).all()
+            products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) | (Product.boost==1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price).all()
         # set json result
         for product in products:
             results.append(product.get_product())
@@ -458,12 +458,24 @@ def get_product_sub_cat_filter(parent_category_id):
         
         if order_by=='desc':
             for key, value in sorted(rating_list.items(), key=lambda t: t[1]): # sort rating_list
-                products = Product.query.filter( (or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) & (Product.deleted_at == None) | (Product.boost==1) ).order_by(Product.boost.desc()).order_by(Product.price.desc()).all()
+                products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) & (Product.boost==1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price.desc()).all()
                 for product in products:
                     results.append(product.get_product())
+
+            for key, value in sorted(rating_list.items(), key=lambda t: t[1]): # sort rating_list
+                products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) & (Product.boost!=1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price.desc()).all()
+                for product in products:
+                    results.append(product.get_product())
+                    
+
         if order_by!='desc':
             for key, value in sorted(rating_list.items(), key=lambda t: t[1]): # sort rating_list
-                products = Product.query.filter( (or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) & (Product.deleted_at == None) | (Product.boost==1) ).order_by(Product.boost.desc()).order_by(Product.price).all()
+                products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) & (Product.boost==1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price).all()
+                for product in products:
+                    results.append(product.get_product())
+
+            for key, value in sorted(rating_list.items(), key=lambda t: t[1]): # sort rating_list
+                products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_category_id == parent_category_id ) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) & (Product.boost!=1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price).all()
                 for product in products:
                     results.append(product.get_product())
 
@@ -539,9 +551,9 @@ def get_product_in_subcat_filter(product_sub_category_id):
 
     if main_filter=='price':
         if order_by=='desc':
-            products = Product.query.filter( (or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_sub_category_id == int(product_sub_category_id)) & (Product.price.between(int(min_price), int(max_price))) & (Product.deleted_at == None) | (Product.boost==1) ).order_by(Product.boost.desc()).order_by(Product.price.desc()).all()
+            products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_sub_category_id == int(product_sub_category_id)) & (Product.price.between(int(min_price), int(max_price))) | (Product.boost==1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price.desc()).all()
         if order_by!='desc':
-            products = Product.query.filter( (or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_sub_category_id == int(product_sub_category_id)) & (Product.price.between(int(min_price), int(max_price))) & (Product.deleted_at == None) | (Product.boost==1) ).order_by(Product.boost.desc()).order_by(Product.price).all()
+            products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_sub_category_id == int(product_sub_category_id)) & (Product.price.between(int(min_price), int(max_price))) | (Product.boost==1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price).all()
         # set json result
         for product in products:
             results.append(product.get_product())
@@ -555,12 +567,12 @@ def get_product_in_subcat_filter(product_sub_category_id):
         
         if order_by=='desc':
             for key, value in sorted(rating_list.items(), key=lambda t: t[1]): # sort rating_list
-                products = Product.query.filter( (or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_sub_category_id == int(product_sub_category_id)) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) & (Product.deleted_at == None) | (Product.boost==1) ).order_by(Product.boost.desc()).order_by(Product.price.desc()).all()
+                products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_sub_category_id == int(product_sub_category_id)) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) | (Product.boost==1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price.desc()).all()
                 for product in products:
                     results.append(product.get_product())
         if order_by!='desc':
             for key, value in sorted(rating_list.items(), key=lambda t: t[1]): # sort rating_list
-                products = Product.query.filter( (or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_sub_category_id == int(product_sub_category_id)) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) & (Product.deleted_at == None) | (Product.boost==1) ).order_by(Product.boost.desc()).order_by(Product.price).all()
+                products = Product.query.filter( ((or_(*conditions)) & (Product.name.ilike("%"+search_str+"%")) & (Product.product_sub_category_id == int(product_sub_category_id)) & (Product.price.between(int(min_price), int(max_price))) & (Product.user_id==key) | (Product.boost==1) ) & (Product.deleted_at == None) ).order_by(Product.boost.desc()).order_by(Product.price).all()
                 for product in products:
                     results.append(product.get_product())
 
